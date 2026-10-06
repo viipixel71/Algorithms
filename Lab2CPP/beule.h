@@ -1,7 +1,6 @@
 #ifndef BEULE_H
 #define BEULE_H
 
-
 #include "list.h"
 
 struct Stack;
