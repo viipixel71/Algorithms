@@ -18,6 +18,14 @@ bool is_number(const std::string& s)
     return true;
 }
 
+static Data pop_val(Stack* stack)
+{
+    if (stack_empty(stack)) return 0;
+    Data val = stack_get(stack);
+    stack_pop(stack);
+    return val;
+}
+
 void process_stream(std::istream& in)
 {
     Stack* stack = stack_create();
@@ -39,8 +47,8 @@ void process_stream(std::istream& in)
         }
         else if (auto it = ops.find(token); it != ops.end())
         {
-            Data b = stack_pop(stack);
-            Data a = stack_pop(stack);
+            Data b = pop_val(stack);
+            Data a = pop_val(stack);
             stack_push(stack, it->second(a, b));
         }
         else if (token == "dup") { stack_dup(stack); }
@@ -48,9 +56,9 @@ void process_stream(std::istream& in)
         else if (token == "swap") { stack_swap(stack); }
         else if (token == "over") { stack_over(stack); }
         else if (token == "rot") { stack_rot(stack); }
-        else if (token == "." && !stack_is_empty(stack))
+        else if (token == "." && !stack_empty(stack))
         {
-            std::cout << stack_pop(stack) << "\n";
+            std::cout << pop_val(stack) << "\n";
         }
     }
 
